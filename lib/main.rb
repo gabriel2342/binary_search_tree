@@ -2,12 +2,12 @@
 
 # Node class creates nodes for our BST
 class Node
-  attr_accessor :data, :left_node, :right_node
+  attr_accessor :data, :left, :right
 
   def initialize(data = nil, left = nil, right = nil)
-    self.data = data
-    self.left = left
-    self.right = right
+    @data = data
+    @left = left
+    @right = right
   end
 end
 
@@ -16,19 +16,28 @@ class Tree
   attr_accessor :root
 
   def initialize(array)
-    self.root = build_tree(array.sort.uniq)
+    @root = build_tree(array.sort.uniq)
   end
 
   def build_tree(array)
     return if array.empty?
 
+    return Node.new(array[0]) if array.length < 2
+
     mid = array.size / 2
     root = Node.new(array[mid])
-    left = build_tree(array.take(mid))
-    right = build_tree(array.drop(mid))
-    root.left = left
-    root.right = right
+    root.left = build_tree(array[0...mid])
+    root.right = build_tree(array[mid + 1..-1])
     root
+  end
+
+  def insert(root, value)
+    return Node.new(value) if root.nil?
+    if value < root.data
+      
+    end
+    
+    
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -38,5 +47,5 @@ class Tree
   end
 end
 
-tree = Tree.new(Array.new(15) { rand(1..100) })
+tree = Tree.new([1, 2, 3, 4, 5, 6, 7])
 tree.pretty_print
