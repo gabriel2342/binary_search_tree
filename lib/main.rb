@@ -2,7 +2,7 @@
 
 # Node class creates nodes for our BST
 class Node
-  attr_accessor :data, :left, :right
+  attr_reader :data, :left, :right
 
   def initialize(data = nil, left = nil, right = nil)
     @data = data
@@ -13,7 +13,7 @@ end
 
 # creates the balnlced binary tree
 class Tree
-  attr_accessor :root
+  attr_reader :root
 
   def initialize(array)
     @root = build_tree(array.sort.uniq)
@@ -31,15 +31,20 @@ class Tree
     root
   end
 
-  def insert(root, value)
-    return Node.new(value) if root.nil?
-    if value < root.data
-      
+  def insert(value, node = @root)
+    return Node.new(value) if node.nil?
+
+    if value < node.data
+      node.left = insert(value, node.left)
+    else
+      node.right = insert(value, node.right)
     end
-    
-    
+    node
   end
 
+
+
+  
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -47,5 +52,7 @@ class Tree
   end
 end
 
-tree = Tree.new([1, 2, 3, 4, 5, 6, 7])
+tree = Tree.new([1, 2, 3, 4, 5, 6, 7, 9, 12])
+tree.pretty_print
+tree.insert(8)
 tree.pretty_print
