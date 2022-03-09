@@ -2,7 +2,7 @@
 
 # Node class creates nodes for our BST
 class Node
-  attr_reader :data, :left, :right
+  attr_accessor :data, :left, :right
 
   def initialize(data = nil, left = nil, right = nil)
     @data = data
@@ -31,6 +31,7 @@ class Tree
     root
   end
 
+
   def insert(value, node = @root)
     return Node.new(value) if node.nil?
 
@@ -43,8 +44,51 @@ class Tree
   end
 
 
-
+  def delete(value, node = @root)
+    return if node.nil?
   
+    if value < node.data
+      node.left = delete(value, node.left)
+    elsif value > node.data
+      node.right = delete(value, node.right)
+    else      
+      return node.right if node.left.nil? 
+      return node.left if node.right.nil?
+      next_min_node = find_next_min(node.right)
+      node.data = next_min_node.data
+      node.right = delete(next_min_node.data, node.right)
+    end
+    node
+  end
+
+  def find_next_min(node)
+    node = node.left until node.left.nil?
+    node
+  end
+
+  def find(value, node = @root)
+    return node if node.data == value || node.nil?
+    if value < node.data
+      find(value, node.left)
+    else
+      find(value, node.right)
+    end
+  end
+
+  def level_order
+    result = []
+    queue = [@root]
+    
+    until queue.empty?
+      node = queue.shift
+      queue.push(node.left) unless node.left.nil?
+      queue.push(node.right) unless node.right.nil?
+      block_given? ? yield(node) : result.push(node.data)
+    end
+    
+    result unless block_given?
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -56,3 +100,7 @@ tree = Tree.new([1, 2, 3, 4, 5, 6, 7, 9, 12])
 tree.pretty_print
 tree.insert(8)
 tree.pretty_print
+tree.delete(8)
+tree.pretty_print
+p tree.find(12)
+p tree.level_order
