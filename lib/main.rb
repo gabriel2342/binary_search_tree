@@ -89,6 +89,30 @@ class Tree
     result unless block_given?
   end
 
+  def preorder(node = @root, result = [])
+    return result if node.nil?
+    block_given? ? yield(node) : result.push(node.data)
+    result = preorder(node.left, result)
+    result = preorder(node.right, result)
+    result unless block_given?
+  end
+
+  def inorder(node = @root, result = [])
+    return result if node.nil?
+    result = inorder(node.left, result)
+    block_given? ? yield(node) : result.push(node.data)
+    result = inorder(node.right, result)
+    result unless block_given?
+  end
+
+  def postorder(node = @root, result = [])
+    return result if node.nil?
+    result = postorder(node.left, result)
+    result = postorder(node.right, result)
+    block_given? ? yield(node) : result.push(node.data)
+    result unless block_given?
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -104,3 +128,6 @@ tree.delete(8)
 tree.pretty_print
 p tree.find(12)
 p tree.level_order
+p tree.preorder
+p tree.inorder
+p tree.postorder
