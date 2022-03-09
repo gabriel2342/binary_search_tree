@@ -113,6 +113,26 @@ class Tree
     result unless block_given?
   end
 
+  def height(value)
+    node = find(value)
+    left_height = 0
+    right_height = 0
+
+    until node.left.nil? && node.right.nil?
+      node = node.left
+      left_height +=1
+    end
+
+    until node.left.nil? && node.right.nil?
+      node = node.right
+      right_height +=1
+    end
+    
+    [left_height, right_height].max + 1
+  
+    end
+
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -131,3 +151,4 @@ p tree.level_order
 p tree.preorder
 p tree.inorder
 p tree.postorder
+p tree.height(2)
