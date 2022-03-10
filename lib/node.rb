@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Node class creates nodes for our BST
-class Node
+class Node 
   attr_accessor :data, :left, :right
 
   def initialize(data = nil, left = nil, right = nil)

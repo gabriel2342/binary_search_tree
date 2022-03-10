@@ -142,24 +142,3 @@ def pretty_print(node = @root, prefix = '', is_left = true)
 end
 end
 
-tree = Tree.new([1, 2, 3, 4, 5, 6, 7, 9, 12])
-tree.pretty_print
-tree.insert(8)
-tree.pretty_print
-tree.delete(8)
-tree.pretty_print
-p tree.find(12)
-p tree.level_order
-p tree.preorder
-p tree.inorder
-p tree.postorder
-tree.insert(15)
-tree.insert(16)
-tree.insert(17)
-tree.insert(18)
-tree.insert(19)
-tree.insert(20)
-tree.pretty_print
-p tree.balanced?
-tree.rebalance
-tree.pretty_print
