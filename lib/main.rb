@@ -132,6 +132,15 @@ class Tree
   
     end
 
+    def depth(value, node = @root, depth = 0)
+      return depth if value == node.data
+      if value < node.data
+        depth(value, node.left, depth += 1)
+      else
+        depth(value, node.right, depth += 1)
+      end
+    end
+
 
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -152,3 +161,4 @@ p tree.preorder
 p tree.inorder
 p tree.postorder
 p tree.height(2)
+p tree.depth(6)
